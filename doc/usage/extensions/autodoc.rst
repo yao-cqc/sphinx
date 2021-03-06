@@ -61,19 +61,17 @@ inserting them into the page source under a suitable :rst:dir:`py:module`,
 
 
 .. rst:directive:: automodule
-                   autoclass
-                   autoexception
 
-   Document a module, class or exception.  All three directives will by default
-   only insert the docstring of the object itself::
+   Document a module.  It will by default only insert the docstring of
+   the module itself::
 
-      .. autoclass:: Noodle
+      .. automodule:: noodle
 
    will produce source like this::
 
-      .. class:: Noodle
+      .. class:: noodle
 
-         Noodle's docstring.
+         noodle's docstring.
 
    The "auto" directives can also contain content of their own, it will be
    inserted into the resulting non-auto directive source after the docstring
@@ -82,12 +80,109 @@ inserting them into the page source under a suitable :rst:dir:`py:module`,
    Therefore, you can also mix automatic and non-automatic member documentation,
    like so::
 
-      .. autoclass:: Noodle
-         :members: eat, slurp
+      .. automodule:: noodle
 
-         .. method:: boil(time=10)
+         .. function:: boil(time=10)
 
             Boil the noodle *time* minutes.
+
+
+   .. rubric:: Options
+
+   .. rst:directive:option:: members
+      :type: no value or comma separated list
+
+      If set, autodoc will generate document for the members of the target
+      module.
+
+      For example::
+
+        .. automodule:: noodle
+           :members:
+
+      will document all module members (recursively).
+
+      By default, autodoc will not generate document for the members that are
+      private, not having docstrings, inherited from super class, or special
+      members.
+
+      For modules, ``__all__`` will be respected when looking for members unless
+      you give the ``ignore-module-all`` flag option.  Without
+      ``ignore-module-all``, the order of the members will also be the order in
+      ``__all__``.
+
+      You can also give an explicit list of members; only these will then be
+      documented::
+
+        .. autoclass:: Noodle
+           :members: eat, slurp
+
+   .. rst:directive:option:: undoc-members
+      :type: no value
+
+      If set, autodoc will also generate document for the members not having
+      docstrings::
+
+        .. automodule:: noodle
+           :members:
+           :undoc-members:
+
+   .. rst:directive:option:: private-members
+      :type: no value or comma separated list
+
+      If set, autodoc will also generate document for the private members
+      (that is, those named like ``_private`` or ``__private``)::
+
+        .. automodule:: noodle
+           :members:
+           :private-members:
+
+      It can also take an explicit list of member names to be documented as
+      arguments::
+
+        .. automodule:: noodle
+           :members:
+           :private-members: _spicy, _garlickly
+
+      .. versionadded:: 1.1
+      .. versionchanged:: 3.2
+         The option can now take arguments.
+
+   .. rst:directive:option:: special-members
+      :type: no value or comma separated list
+
+      If set, autodoc will also generate document for the special members
+      (that is, those named like ``__special__``)::
+
+        .. autoclass:: my.Class
+           :members:
+           :special-members:
+
+      It can also take an explicit list of member names to be documented as
+      arguments::
+
+        .. autoclass:: my.Class
+           :members:
+           :special-members: __init__, __name__
+
+      .. versionadded:: 1.1
+
+      .. versionchanged:: 1.2
+         The option can now take arguments
+
+.. rst:directive:: autoclass
+                   autoexception
+
+   Document a class or exception.  Both directives will by default only insert
+   the docstring of the object itself::
+
+      .. autoclass:: Noodle
+
+   will produce source like this::
+
+      .. class:: Noodle
+
+         Noodle's docstring.
 
    .. rubric:: Options
 
@@ -112,11 +207,6 @@ inserting them into the page source under a suitable :rst:dir:`py:module`,
       By default, autodoc will not generate document for the members that are
       private, not having docstrings, inherited from super class, or special
       members.
-
-      For modules, ``__all__`` will be respected when looking for members unless
-      you give the ``ignore-module-all`` flag option.  Without
-      ``ignore-module-all``, the order of the members will also be the order in
-      ``__all__``.
 
       You can also give an explicit list of members; only these will then be
       documented::
