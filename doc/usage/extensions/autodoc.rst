@@ -86,7 +86,6 @@ inserting them into the page source under a suitable :rst:dir:`py:module`,
 
             Boil the noodle *time* minutes.
 
-
    .. rubric:: Options
 
    .. rst:directive:option:: members
@@ -103,8 +102,7 @@ inserting them into the page source under a suitable :rst:dir:`py:module`,
       will document all module members (recursively).
 
       By default, autodoc will not generate document for the members that are
-      private, not having docstrings, inherited from super class, or special
-      members.
+      private, not having docstrings.
 
       For modules, ``__all__`` will be respected when looking for members unless
       you give the ``ignore-module-all`` flag option.  Without
