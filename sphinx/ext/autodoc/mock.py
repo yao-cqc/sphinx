@@ -148,8 +148,13 @@ def mock(modnames: List[str]) -> Generator[None, None, None]:
         sys.meta_path.insert(0, finder)
         yield
     finally:
-        sys.meta_path.remove(finder)
-        finder.invalidate_caches()
+        try:
+            sys.meta_path.remove(finder)
+            finder.invalidate_caches()
+        except ValueError:
+            # If a program mutates sys.meta_path
+            # then the remove() method might fail
+            pass
 
 
 def ismock(subject: Any) -> bool:
